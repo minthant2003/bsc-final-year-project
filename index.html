@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>24/7 Convenience Store IMS with POS</title>
+  <link rel="shortcut icon" type="image/png" href="./src/assets/images/logos/247_icon.png" />
+  <link rel="stylesheet" href="./src/assets/css/styles.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+  
+  <link rel="stylesheet" href="./index.css">
+
+  <!-- try one of these cdn links chart.js -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+  <script src="https://unpkg.com/chart.js"></script>
+
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
+      <!-- Sidebar scroll-->
+      <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+          <a href="#" class="text-nowrap logo-img">
+            <img src="./src/assets/images/logos/247_logo.png" width="130" height="50" alt="" />
+          </a>
+          <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+            <i class="ti ti-x fs-8"></i>
+          </div>
+        </div>
+        <nav id="sideBarContainer" class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <!-- side bar elements will be rendered here -->
+        </nav> 
+        <!-- End Sidebar navigation -->
+      </div>
+      <!-- End Sidebar scroll-->
+    </aside>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <ul class="navbar-nav">
+            <li class="nav-item d-block d-xl-none">
+              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                <i class="ti ti-bell-ringing"></i>
+                <div class="notification bg-primary rounded-circle"></div>
+              </a>
+            </li> -->
+          </ul>
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="./src/assets/images/profile/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                  <div class="message-body">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="fa-solid fa-star"></i>
+                      <p id="profileRoleName" class="mb-0 fs-3"></p>
+                    </a>
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="fa-solid fa-circle-user"></i>
+                      <p id="profileUserName" class="mb-0 fs-3"></p>
+                    </a>
+                    <a href="javascript:void(0)" id="logoutBtn" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!--  Header End -->
+      <div class="container-fluid">
+        <!--  Row 1 -->
+        <div class="row">
+          <div class="col-lg-8 d-flex align-items-strech">
+            <div class="card w-100">
+              <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                  <div class="mb-3 mb-sm-0">
+                    <h5 class="card-title fw-semibold">No of Purchase Orders</h5>
+                  </div>
+                </div>
+                <canvas id="noOfPurchaseOrderChart"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card overflow-hidden">
+                  <div class="card-body p-4">
+                    <h5 class="card-title mb-9 fw-semibold">Percentage of Items By Perishability</h5>
+                    <canvas id="perishabilityChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 d-flex align-items-strech">
+            <div class="card w-100">
+              <div class="card-body">
+                <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
+                  <div class="mb-3 mb-sm-0">
+                    <h5 class="card-title fw-semibold">No of Items By Category</h5>
+                  </div>
+                </div>
+                <canvas id="noOfItemsByCategoryChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./src/assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="./src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./src/assets/js/sidebarmenu.js"></script>
+  <script src="./src/assets/js/app.min.js"></script>
+  <script src="./src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+  <script src="./src/assets/libs/simplebar/dist/simplebar.js"></script>
+  <script src="./src/assets/js/dashboard.js"></script>
+  <script src="./src/util/js/DataLoginLocalStorageUtil.js"></script>
+  <script src="./src/util/js/CheckoutObjLocalStorageUtil.js"></script>
+  <script>
+    // current user data from local storage
+    let cUser = {};
+
+    // seeder API request
+    const seedRoles = async () => {
+      await fetch("http://localhost/finalYearProjectServer/src/database/seeder/RoleSeeder.php", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => () => {})
+        .catch(error => console.error("Error: ", error));
+    }
+    const seedUsers = async () => {
+      await fetch("http://localhost/finalYearProjectServer/src/database/seeder/UserSeeder.php", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => () => {})
+        .catch(error => console.error("Error: ", error));
+    }
+
+    const checkAuth = () => {
+      const dataLogin = getDataLoginFromLocalStorage();
+      if (!dataLogin) {
+        window.location.href = "./src/html/Login/Login.html";
+      }
+    }
+
+    // Render sidebar
+    const renderSideBar = () => {
+      let sideBarType = "";
+      if (cUser.roleName === "admin") {
+        sideBarType = "AdminSideBar";
+      } else if (cUser.roleName === "manager") {
+        sideBarType = "ManagerSideBar";
+      } else {
+        sideBarType = "StaffSideBar";
+      }
+      fetch(`./src/layout/${sideBarType}.html`)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('sideBarContainer').innerHTML = data;
+        })
+        .catch(error => console.error('Error rendering sidebar: ', error));
+    }
+
+    // initialise localstorage checkout obj
+    const checkCheckoutObj = () => {
+      const checkoutObj = window.getCheckoutObjFromLocalStorage();
+      if (!checkoutObj) {
+        window.initialiseCheckoutObj();
+      }
+    }
+
+    const renderCategoryItemNoBarChart = (labels, qtyList) => {
+      const data = {
+        labels: labels,
+        datasets: [{
+          label: 'No of Items By Category',
+          data: qtyList,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      };
+
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      };
+
+      const canvas = document.getElementById('noOfItemsByCategoryChart').getContext('2d');
+      new Chart(canvas, config);
+    }
+
+    const getCategoryItemNoForBarChart = () => {
+      fetch("http://localhost/finalYearProjectServer/src/api/dashboard/GetCategoryItemNoForReport.php", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 200) {
+            const labels = data?.data?.map(obj => obj.categoryName) || [];
+            const qtyList = data?.data?.map(obj => obj.qty) || [];
+            renderCategoryItemNoBarChart(labels, qtyList);
+          }
+        })
+        .catch(error => console.error("Error: ", error));
+    }
+
+    const rederItemPerishabilityPieChart = (perishable, nonPerishable, total) => {
+      const perishablePercent = ((perishable / total) * 100).toFixed(2);
+      const nonPerishablePercent = ((nonPerishable / total) * 100).toFixed(2);
+
+      const data = {
+        labels: [
+          `Perishable (${perishablePercent}%)`,
+          `Non-Perishable (${nonPerishablePercent}%)`
+        ],
+        datasets: [{
+          data: [perishablePercent, nonPerishablePercent],
+          backgroundColor: ['#ff6384', '#36a2eb'],
+          hoverOffset: 8
+        }]
+      }
+
+      const config = {
+        type: 'pie',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: `Total Items: ${total}`
+            }
+          }
+        }
+      }
+
+      const canvas = document.getElementById('perishabilityChart').getContext('2d');
+      new Chart(canvas, config);
+    }
+
+    const getItemPerishabilityForPieChart = () => {
+      fetch("http://localhost/finalYearProjectServer/src/api/dashboard/GetItemPerishabilityPerForReport.php", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 200) {
+            const total = data?.data?.total || 0;
+            const perishable = data?.data?.perishable || 0;
+            const nonPerishable = data?.data?.nonPerishable || 0;
+            rederItemPerishabilityPieChart(perishable, nonPerishable, total);
+          }
+        })
+        .catch(error => console.error("Error: ", error));
+    }
+
+    const renderPurchaseOrderNoBarChart = (labels, qtyList) => {
+      // approve, pending, reject
+      const backgroundColors = ['rgba(75, 192, 192, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(255, 99, 132, 0.6)'];
+      const borderColors = ['rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(255, 99, 132, 1)'];
+
+      const data = {
+        labels: labels,
+        datasets: [{
+          data: qtyList,
+          backgroundColor: backgroundColors,
+          borderColor: borderColors,
+          borderWidth: 1
+        }]
+      };
+
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      };
+
+      const canvas = document.getElementById('noOfPurchaseOrderChart').getContext('2d');
+      new Chart(canvas, config);
+    }
+
+    const getPurchaseOrderNoForBarChart = () => {
+      fetch("http://localhost/finalYearProjectServer/src/api/dashboard/GetPurchaseOrderCountForReport.php", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 200) {
+            const labels = data?.data?.map(obj => obj.status) || [];
+            const qtyList = data?.data?.map(obj => obj.qty) || [];
+            renderPurchaseOrderNoBarChart(labels, qtyList);
+          }
+        })
+        .catch(error => console.error("Error: ", error));
+    }
+
+    // DOM content loaded event section
+    document.addEventListener("DOMContentLoaded", async () => {
+      cUser = getDataLoginFromLocalStorage();
+
+      await seedRoles();
+      await seedUsers();
+      checkAuth();
+      renderSideBar();
+      checkCheckoutObj();
+      getCategoryItemNoForBarChart();
+      getItemPerishabilityForPieChart();
+      getPurchaseOrderNoForBarChart();
+
+      const logoutHandler = () => {
+        window.removeDataLoginFromLocalStorage();
+        window.location.href = "./src/html/Login/Login.html";
+      }
+
+      document.getElementById("profileRoleName").textContent = `Role: ${cUser?.roleName || "_"}`;
+      document.getElementById("profileUserName").textContent = `User: ${cUser?.userName || "_"}`;
+      document.getElementById("logoutBtn").addEventListener("click", logoutHandler);
+    });
+  </script>
+</body>
+
+</html>

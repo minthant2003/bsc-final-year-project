@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>24/7 Convenience Store IMS with POS</title>
+  <link rel="shortcut icon" type="image/png" href="./../../assets/images/logos/247_icon.png" />
+  <link rel="stylesheet" href="./../../assets/css/styles.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="./../../css/CommonCss.css">
+  <link rel="stylesheet" href="./SaleStyle.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
+      <!-- Sidebar scroll-->
+      <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+          <a href="#" class="text-nowrap logo-img">
+            <img src="./../../assets/images/logos/247_logo.png" width="130" height="50" alt="" />
+          </a>
+          <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+            <i class="ti ti-x fs-8"></i>
+          </div>
+        </div>
+        <!-- Sidebar navigation-->
+        <nav id="sideBarContainer" class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <!-- side bar elements will be rendered here -->
+        </nav>
+        <!-- End Sidebar navigation -->
+      </div>
+      <!-- End Sidebar scroll-->
+    </aside>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <ul class="navbar-nav">
+            <li class="nav-item d-block d-xl-none">
+              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+          </ul>
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="./../../assets/images/profile/user-1.jpg" alt="" width="35" height="35"
+                    class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                  <div class="message-body">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="fa-solid fa-star"></i>
+                      <p id="profileRoleName" class="mb-0 fs-3"></p>
+                    </a>
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="fa-solid fa-circle-user"></i>
+                      <p id="profileUserName" class="mb-0 fs-3"></p>
+                    </a>
+                    <a href="javascript:void(0)" id="logoutBtn"
+                      class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!--  Header End -->
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 d-flex align-items-stretch">
+            <div class="card w-100">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h5 class="card-title fw-semibold">Checkout</h5>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-md-4 mb-3">
+                    <!-- video element to render user camera's stream -->
+                    <video id="barcodeScanner"></video>
+                    <button class="w-100 btn btn-success" id="scanBtn">Scan an Item</button>
+                  </div>
+                  <div class="col-12 col-md-8">
+                    <div class="card w-100">
+                      <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h6 class="fw-semibold">Items</h6>
+                        </div>
+                        <div class="table-responsive">
+                          <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                              <tr>
+                                <th class="border-bottom-0">
+                                  <h6 class="fw-semibold mb-0"><strong>Item Code</strong></h6>
+                                </th>
+                                <th class="border-bottom-0">
+                                  <h6 class="fw-semibold mb-0"><strong>Quantity</strong></h6>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody id="checkoutTableBody">
+                              <!-- <tr>
+                                <td class="border-bottom-0 text-dark">item code</td>
+                                <td class="border-bottom-0 text-dark fw-bolder">5</td>
+                              </tr> -->
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                      <button class="btn btn-secondary" id="checkoutBtn">Checkout</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end Delete Confirmation Modal -->
+
+  <!-- toast message -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toastDiv" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto" id="toastTitle">Bootstrap</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" id="toastMsg">Default message.</div>
+    </div>
+  </div>
+  <!--  -->
+
+  <script src="./../../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="./../../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./../../assets/js/sidebarmenu.js"></script>
+  <script src="./../../assets/js/app.min.js"></script>
+  <script src="./../../assets/libs/simplebar/dist/simplebar.js"></script>
+  <script src="./../../util/js/DataLoginLocalStorageUtil.js"></script>
+  <script src="./../../util/js/DeleteConfirmModalUtil.js"></script>
+  <script src="./../../util/js/BsToastUtil.js"></script>
+  <script src="./../../util/js/BarcodeScannerUtil.js"></script>
+  <script src="./../../util/js/CheckoutObjLocalStorageUtil.js"></script>
+  <script>
+    // current user data from local storage
+    let cUser = {};
+
+    // Render sidebar
+    const renderSideBar = () => {
+      let sideBarType = "";
+      if (cUser.roleName === "admin") {
+        sideBarType = "AdminSideBar";
+      } else if (cUser.roleName === "manager") {
+        sideBarType = "ManagerSideBar";
+      } else {
+        sideBarType = "StaffSideBar";
+      }
+      fetch(`./../../layout/${sideBarType}.html`)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('sideBarContainer').innerHTML = data;
+        })
+        .catch(error => console.error('Error rendering sidebar: ', error));
+    }
+
+    const checkAuth = () => {
+      const dataLogin = getDataLoginFromLocalStorage();
+      if (!dataLogin) {
+        window.location.href = "./../Login/Login.html";
+      }
+    }
+
+    const handleClickScanBtn = () => {
+      window.startBarcodeScan();
+    }
+
+    const renderCameraStream = () => {
+      // get video element and replace default src with user device's stream
+      const videoElm = document.getElementById("barcodeScanner");
+      videoElm.srcObject = null; // set NULL
+
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+        .then(stream => {
+          videoElm.srcObject = stream; // replace src
+          videoElm.play();
+        })
+        .catch(error => {
+          console.error("Camera access error:", error);
+        });
+    }
+
+    // this method would be triggered when the item code is scanned
+    const validateScannedCode = async (itemCode) => {
+      // console.log("code : ", itemCode)
+      // 1.1. check empty case
+      if (!itemCode) {
+        showToast("Error", "Empty! Please scan again.", false);
+        return;
+      }
+
+      // 1.2. check scanned code exists in DB
+      const resStatus = await getItemByCodeApiHandler(itemCode);
+      if (!resStatus || resStatus !== 200) {
+        showToast("Error", "Not Found! Please scan again.", false);
+        return;
+      }
+
+      // 1.3. check item in stock
+      const isSufficient = await checkItemInStockByCode(itemCode);
+      if (!isSufficient) {
+        showToast("Error", "No more In-Stock!", false);
+        return;
+      }
+
+      // 1.4. update check obj local storage
+      updateCheckoutObjAfterCheckInstock(itemCode);
+      renderCart();
+    }
+
+    // case 1. items is []
+    // case 2. items is not [], and itemCode exists in items
+    // case 3. items is not [], and itemCode does not exist in items
+    const checkItemInStockByCode = async (itemCode) => {
+      // 1.1. get item quantity from local storage
+      const checkoutObj = window.getCheckoutObjFromLocalStorage();
+      const items = checkoutObj.items || [];
+
+      let itemQuantityToCheckInStock = 1; // for cases 1 and 3
+      const index = items.findIndex(item => item.itemCode === itemCode);
+      if (index !== -1) {
+        // for case 2
+        itemQuantityToCheckInStock = items[index].quantity + 1;
+      }
+
+      console.log("Quantity : ", itemQuantityToCheckInStock, " Item Code : ", itemCode)
+
+      // 1.2. check in stock in DB using quantity from local storage
+      const resStatus = await checkInStockApiHandler(itemCode, itemQuantityToCheckInStock);
+      if (resStatus && resStatus === 200) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    const updateCheckoutObjAfterCheckInstock = (itemCode) => {
+      let checkoutObj = window.getCheckoutObjFromLocalStorage();
+      let items = checkoutObj.items || [];
+
+      const index = items.findIndex(item => item.itemCode === itemCode);
+      if (index !== -1) {
+        items[index].quantity += 1;
+      } else {
+        items.push({ itemCode, quantity: 1 });
+      }
+
+      checkoutObj.items = items;
+      window.setCheckoutObjToLocalStorage(checkoutObj);
+    }
+
+    const renderCart = () => {
+      const checkoutObj = window.getCheckoutObjFromLocalStorage();
+      const items = checkoutObj?.items || [];
+
+      let tableBody = document.getElementById("checkoutTableBody");
+      tableBody.innerHTML = ""; // clear previous items
+      if (items.length > 0) {
+        items?.forEach(scannedItem => {
+          const tableRow = document.createElement("tr");
+          tableRow.innerHTML = `
+            <td class="border-bottom-0 text-dark">${scannedItem?.itemCode || "-"}</td>
+            <td class="border-bottom-0 text-dark">${scannedItem?.quantity || 0}</td>
+          `;
+          tableBody.appendChild(tableRow);
+        });
+      } else {
+        tableBody.innerHTML = "<tr><td colspan='2'>No Scanned Items found!</td></tr>";
+      }
+    }
+
+    const handleClickCheckoutBtn = () => {
+      let checkoutObj = window.getCheckoutObjFromLocalStorage();
+      if (checkoutObj?.items?.length > 0) {
+        checkoutObj.paymentMethod = "cash";
+        checkoutObj.remark = "";
+        checkoutObj.userId = cUser?.id || 0;
+        checkoutApiHandler(checkoutObj);
+      } else {
+        showToast("Error", "No items to checkout. Please Scan!", false);
+      }
+    }
+
+    const checkoutApiHandler = async (checkoutObj) => {
+      await fetch(`./../../api/sale/Checkout.php`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(checkoutObj),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data?.status === 200) {
+            showToast("Success", data?.message || "-", true);
+            clearCheckoutObjLocalStorage();
+          } else {
+            showToast("Error", data?.message || "-", false);
+          }
+        })
+        .catch(error => console.error("Error : ", error));
+    }
+
+    const clearCheckoutObjLocalStorage = () => {
+      window.initialiseCheckoutObj();
+      renderCart();
+    }
+
+    const getItemByCodeApiHandler = async (itemCode) => {
+      let resStatus = null;
+      await fetch(`./../../api/item/GetItemByCode.php?itemCode=${itemCode}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          resStatus = Number(data.status);
+        })
+        .catch(error => console.error("Fetch Error:", error));
+
+      return resStatus;
+    }
+
+    const checkInStockApiHandler = async (itemCode, quantity) => {
+      let resStatus = null;
+      await fetch(`./../../api/sale/CheckInStock.php?itemCode=${itemCode}&quantity=${quantity}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          resStatus = Number(data.status);
+        })
+        .catch(error => console.error("Fetch Error:", error));
+
+      return resStatus;
+    }
+
+    // initialise localstorage checkout obj
+    const checkCheckoutObj = () => {
+      const checkoutObj = window.getCheckoutObjFromLocalStorage();
+      if (!checkoutObj) {
+        window.initialiseCheckoutObj();
+      }
+    }
+
+    const logoutHandler = () => {
+      window.removeDataLoginFromLocalStorage();
+      window.location.href = "./../Login/Login.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      cUser = getDataLoginFromLocalStorage();
+      checkAuth();
+      renderSideBar();
+      renderCart();
+      checkCheckoutObj();
+      renderCameraStream();
+
+      document.getElementById("profileRoleName").textContent = `Role: ${cUser?.roleName || "_"}`;
+      document.getElementById("profileUserName").textContent = `User: ${cUser?.userName || "_"}`;
+      document.getElementById("logoutBtn").addEventListener("click", logoutHandler);
+
+      document.getElementById("scanBtn").addEventListener("click", handleClickScanBtn);
+      document.getElementById("checkoutBtn").addEventListener("click", handleClickCheckoutBtn);
+    })
+  </script>
+</body>
+
+</html>

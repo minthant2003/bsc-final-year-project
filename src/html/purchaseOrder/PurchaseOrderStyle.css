@@ -1,0 +1,4 @@
+#itemCheckboxContainer {
+    max-height: 245px;
+    overflow-y: auto;
+}

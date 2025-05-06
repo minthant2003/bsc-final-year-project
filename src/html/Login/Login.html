@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>24/7 Convenience Store IMS with POS</title>
+  <link rel="shortcut icon" type="image/png" href="./../../assets/images/logos/247_icon.png" />
+  <link rel="stylesheet" href="./../../assets/css/styles.min.css" />
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <div
+      class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+      <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="row justify-content-center w-100">
+          <div class="col-md-8 col-lg-6 col-xxl-3">
+            <div class="card mb-0">
+              <div class="card-body">
+                <a href="./../../../index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                  <img src="./../../assets/images/logos/247_logo.png" width="120" height="50" alt="">
+                </a>
+                <p class="text-center">IMS with POS System</p>
+                <form>
+                  <div class="mb-3">
+                    <label for="userName" class="form-label">Username <span class="text-danger">*</span></label>
+                    <input name="userName" type="text" class="form-control" id="userName" aria-describedby="userName">
+                  </div>
+                  <div class="mb-4">
+                    <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                    <input name="password" type="password" class="form-control" id="password">
+                  </div>
+                  <!-- <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="form-check">
+                      <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
+                      <label class="form-check-label text-dark" for="flexCheckChecked">
+                        Remeber this Device
+                      </label>
+                    </div>
+                    <a class="text-primary fw-bold" href="./../../../index.html">Forgot Password ?</a>
+                  </div> -->
+                  <a href="#" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" id="loginBtn">Login</a>
+                  <!-- <div class="d-flex align-items-center justify-content-center">
+                    <p class="fs-4 mb-0 fw-bold">New to Modernize?</p>
+                    <a class="text-primary fw-bold ms-2" href="./../authentication-register.html">Create an account</a>
+                  </div> -->
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- toast message -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toastDiv" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto" id="toastTitle">Bootstrap</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" id="toastMsg">Default message.</div>
+    </div>
+  </div>
+  <!--  -->
+
+  <script src="./../../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="./../../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./../../util/js/BsToastUtil.js"></script>
+  <script src="./../../util/js/DataLoginLocalStorageUtil.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // login api request logic
+      const request = {
+        userName: "",
+        password: ""
+      }
+  
+      const handleChangeLoginData = (e) => {
+        const { name, value } = e.target;
+        request[name] = value;
+      }
+  
+      const loginApiHandler = (e) => {
+        e.preventDefault();
+        fetch("http://localhost/finalYearProjectServer/src/api/auth/Login.php", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+          })
+          .then(reponse => reponse.json())
+          .then(data => {
+            if (data.status === 200) {
+              setDataLoginToLocalStorage(data.data);
+              showToast("Success", data.message, true);
+
+              // redirect to index if admin/manager but to checkout if not admin/manager
+              const dataLogin = window.getDataLoginFromLocalStorage();
+              if (dataLogin.roleName === 'admin' || dataLogin.roleName === 'manager') {
+                window.location.href = "./../../../index.html";
+              } else {
+                window.location.href = "./../sale/Checkout.html";
+              }
+            } else {
+              showToast("Error", data.message, false);
+            }
+          })
+          .catch(error => console.error('Error:', error));
+      }
+  
+      document.getElementById("userName").addEventListener("input", handleChangeLoginData);
+      document.getElementById("password").addEventListener("input", handleChangeLoginData);
+      document.getElementById("loginBtn").addEventListener("click", loginApiHandler);
+    })
+  </script>
+</body>
+
+</html>
