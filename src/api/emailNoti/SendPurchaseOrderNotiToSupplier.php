@@ -40,13 +40,13 @@ try {
     $mail->Host = "smtp.gmail.com";
     $mail->SMTPDebug = SMTP::DEBUG_OFF;
     $mail->SMTPAuth = true;
-    $mail->Username = "mathanwinn2@gmail.com";
-    $mail->Password = "nbiz mxpm tjir vkyv";
+    $mail->Username = "";
+    $mail->Password = "";
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port = "465";
 
     // Parameter
-    $mail->setFrom("mathanwinn2@gmail.com", "Ma Than Win");
+    $mail->setFrom("", "");
     $mail->addAddress($supplierEmail, $supplierName);
 
     // Content
